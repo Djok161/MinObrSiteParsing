@@ -1,0 +1,210 @@
+2024-12-07 22:47:01,224 - INFO - _serve - Started server process [7]
+2024-12-07 22:47:01,224 - INFO - startup - Waiting for application startup.
+2024-12-07 22:47:01,225 - INFO - startup - Start up!
+2024-12-07 22:47:01,225 - INFO - startup - Application startup complete.
+2024-12-07 22:47:01,227 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 22:50:25,574 - INFO - _serve - Started server process [6]
+2024-12-07 22:50:25,575 - INFO - startup - Waiting for application startup.
+2024-12-07 22:50:25,575 - INFO - startup - Start up!
+2024-12-07 22:50:25,575 - INFO - startup - Application startup complete.
+2024-12-07 22:50:25,576 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 22:51:39,245 - INFO - _serve - Started server process [7]
+2024-12-07 22:51:39,245 - INFO - startup - Waiting for application startup.
+2024-12-07 22:51:39,246 - INFO - startup - Start up!
+2024-12-07 22:51:39,246 - INFO - startup - Application startup complete.
+2024-12-07 22:51:39,247 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 22:53:50,196 - INFO - _serve - Started server process [7]
+2024-12-07 22:53:50,196 - INFO - startup - Waiting for application startup.
+2024-12-07 22:53:50,197 - INFO - startup - Start up!
+2024-12-07 22:53:50,197 - INFO - startup - Application startup complete.
+2024-12-07 22:53:50,198 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 22:55:07,857 - INFO - _serve - Started server process [7]
+2024-12-07 22:55:07,858 - INFO - startup - Waiting for application startup.
+2024-12-07 22:55:07,858 - INFO - startup - Start up!
+2024-12-07 22:55:07,858 - INFO - startup - Application startup complete.
+2024-12-07 22:55:07,860 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 22:58:48,033 - INFO - _serve - Started server process [7]
+2024-12-07 22:58:48,033 - INFO - startup - Waiting for application startup.
+2024-12-07 22:58:48,034 - INFO - startup - Start up!
+2024-12-07 22:58:48,034 - INFO - startup - Application startup complete.
+2024-12-07 22:58:48,034 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 22:59:22,485 - INFO - _serve - Started server process [7]
+2024-12-07 22:59:22,485 - INFO - startup - Waiting for application startup.
+2024-12-07 22:59:22,486 - INFO - startup - Start up!
+2024-12-07 22:59:22,486 - INFO - startup - Application startup complete.
+2024-12-07 22:59:22,489 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:04:59,634 - INFO - _serve - Started server process [7]
+2024-12-07 23:04:59,634 - INFO - startup - Waiting for application startup.
+2024-12-07 23:04:59,634 - INFO - startup - Start up!
+2024-12-07 23:04:59,634 - INFO - startup - Application startup complete.
+2024-12-07 23:04:59,635 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:05:28,495 - INFO - _serve - Started server process [7]
+2024-12-07 23:05:28,496 - INFO - startup - Waiting for application startup.
+2024-12-07 23:05:28,496 - INFO - startup - Start up!
+2024-12-07 23:05:28,497 - INFO - startup - Application startup complete.
+2024-12-07 23:05:28,498 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:07:08,534 - INFO - _serve - Started server process [6]
+2024-12-07 23:07:08,534 - INFO - startup - Waiting for application startup.
+2024-12-07 23:07:08,535 - INFO - startup - Start up!
+2024-12-07 23:07:08,535 - INFO - startup - Application startup complete.
+2024-12-07 23:07:08,536 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:11:36,626 - INFO - _serve - Started server process [7]
+2024-12-07 23:11:36,627 - INFO - startup - Waiting for application startup.
+2024-12-07 23:11:36,627 - INFO - startup - Start up!
+2024-12-07 23:11:36,627 - INFO - startup - Application startup complete.
+2024-12-07 23:11:36,628 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:12:30,695 - INFO - _serve - Started server process [6]
+2024-12-07 23:12:30,695 - INFO - startup - Waiting for application startup.
+2024-12-07 23:12:30,695 - INFO - startup - Start up!
+2024-12-07 23:12:30,696 - INFO - startup - Application startup complete.
+2024-12-07 23:12:30,696 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:14:31,972 - INFO - _serve - Started server process [7]
+2024-12-07 23:14:31,972 - INFO - startup - Waiting for application startup.
+2024-12-07 23:14:31,973 - INFO - startup - Start up!
+2024-12-07 23:14:31,973 - INFO - startup - Application startup complete.
+2024-12-07 23:14:31,974 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:15:11,749 - INFO - _serve - Started server process [7]
+2024-12-07 23:15:11,749 - INFO - startup - Waiting for application startup.
+2024-12-07 23:15:11,749 - INFO - startup - Start up!
+2024-12-07 23:15:11,750 - INFO - startup - Application startup complete.
+2024-12-07 23:15:11,751 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:17:30,664 - INFO - _serve - Started server process [7]
+2024-12-07 23:17:30,664 - INFO - startup - Waiting for application startup.
+2024-12-07 23:17:30,664 - INFO - startup - Start up!
+2024-12-07 23:17:30,665 - INFO - startup - Application startup complete.
+2024-12-07 23:17:30,666 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:18:24,298 - INFO - _serve - Started server process [7]
+2024-12-07 23:18:24,299 - INFO - startup - Waiting for application startup.
+2024-12-07 23:18:24,299 - INFO - startup - Start up!
+2024-12-07 23:18:24,299 - INFO - startup - Application startup complete.
+2024-12-07 23:18:24,300 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:21:19,637 - INFO - _serve - Started server process [7]
+2024-12-07 23:21:19,637 - INFO - startup - Waiting for application startup.
+2024-12-07 23:21:19,638 - INFO - startup - Start up!
+2024-12-07 23:21:19,638 - INFO - startup - Application startup complete.
+2024-12-07 23:21:19,639 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:23:28,059 - INFO - _serve - Started server process [7]
+2024-12-07 23:23:28,059 - INFO - startup - Waiting for application startup.
+2024-12-07 23:23:28,060 - INFO - startup - Start up!
+2024-12-07 23:23:28,060 - INFO - startup - Application startup complete.
+2024-12-07 23:23:28,061 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:23:50,657 - INFO - _serve - Started server process [7]
+2024-12-07 23:23:50,657 - INFO - startup - Waiting for application startup.
+2024-12-07 23:23:50,659 - INFO - startup - Start up!
+2024-12-07 23:23:50,659 - INFO - startup - Application startup complete.
+2024-12-07 23:23:50,660 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:25:20,284 - INFO - _serve - Started server process [7]
+2024-12-07 23:25:20,285 - INFO - startup - Waiting for application startup.
+2024-12-07 23:25:20,285 - INFO - startup - Start up!
+2024-12-07 23:25:20,285 - INFO - startup - Application startup complete.
+2024-12-07 23:25:20,286 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:26:09,641 - INFO - _serve - Started server process [7]
+2024-12-07 23:26:09,641 - INFO - startup - Waiting for application startup.
+2024-12-07 23:26:09,642 - INFO - startup - Start up!
+2024-12-07 23:26:09,642 - INFO - startup - Application startup complete.
+2024-12-07 23:26:09,643 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-07 23:26:55,825 - INFO - _serve - Started server process [7]
+2024-12-07 23:26:55,825 - INFO - startup - Waiting for application startup.
+2024-12-07 23:26:55,825 - INFO - startup - Start up!
+2024-12-07 23:26:55,826 - INFO - startup - Application startup complete.
+2024-12-07 23:26:55,826 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 13:40:54,162 - INFO - _serve - Started server process [7]
+2024-12-08 13:40:54,164 - INFO - startup - Waiting for application startup.
+2024-12-08 13:40:54,164 - INFO - startup - Start up!
+2024-12-08 13:40:54,164 - INFO - startup - Application startup complete.
+2024-12-08 13:40:54,165 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 13:43:13,119 - INFO - _serve - Started server process [6]
+2024-12-08 13:43:13,119 - INFO - startup - Waiting for application startup.
+2024-12-08 13:43:13,119 - INFO - startup - Start up!
+2024-12-08 13:43:13,120 - INFO - startup - Application startup complete.
+2024-12-08 13:43:13,120 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 13:45:45,793 - INFO - _serve - Started server process [7]
+2024-12-08 13:45:45,794 - INFO - startup - Waiting for application startup.
+2024-12-08 13:45:45,794 - INFO - startup - Start up!
+2024-12-08 13:45:45,794 - INFO - startup - Application startup complete.
+2024-12-08 13:45:45,795 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 13:47:05,790 - INFO - _serve - Started server process [7]
+2024-12-08 13:47:05,791 - INFO - startup - Waiting for application startup.
+2024-12-08 13:47:05,791 - INFO - startup - Start up!
+2024-12-08 13:47:05,791 - INFO - startup - Application startup complete.
+2024-12-08 13:47:05,792 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 13:48:22,221 - INFO - _serve - Started server process [7]
+2024-12-08 13:48:22,222 - INFO - startup - Waiting for application startup.
+2024-12-08 13:48:22,222 - INFO - startup - Start up!
+2024-12-08 13:48:22,223 - INFO - startup - Application startup complete.
+2024-12-08 13:48:22,223 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 13:48:38,177 - INFO - _serve - Started server process [7]
+2024-12-08 13:48:38,177 - INFO - startup - Waiting for application startup.
+2024-12-08 13:48:38,178 - INFO - startup - Start up!
+2024-12-08 13:48:38,178 - INFO - startup - Application startup complete.
+2024-12-08 13:48:38,179 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:00:32,754 - INFO - _serve - Started server process [7]
+2024-12-08 14:00:32,754 - INFO - startup - Waiting for application startup.
+2024-12-08 14:00:32,755 - INFO - startup - Start up!
+2024-12-08 14:00:32,755 - INFO - startup - Application startup complete.
+2024-12-08 14:00:32,756 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:04:12,968 - INFO - _serve - Started server process [7]
+2024-12-08 14:04:12,969 - INFO - startup - Waiting for application startup.
+2024-12-08 14:04:12,969 - INFO - startup - Start up!
+2024-12-08 14:04:12,970 - INFO - startup - Application startup complete.
+2024-12-08 14:04:12,972 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:04:47,385 - INFO - _serve - Started server process [7]
+2024-12-08 14:04:47,385 - INFO - startup - Waiting for application startup.
+2024-12-08 14:04:47,386 - INFO - startup - Start up!
+2024-12-08 14:04:47,386 - INFO - startup - Application startup complete.
+2024-12-08 14:04:47,386 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:05:18,128 - INFO - _serve - Started server process [7]
+2024-12-08 14:05:18,129 - INFO - startup - Waiting for application startup.
+2024-12-08 14:05:18,129 - INFO - startup - Start up!
+2024-12-08 14:05:18,130 - INFO - startup - Application startup complete.
+2024-12-08 14:05:18,131 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:25:23,857 - INFO - _serve - Started server process [7]
+2024-12-08 14:25:23,858 - INFO - startup - Waiting for application startup.
+2024-12-08 14:25:23,859 - INFO - startup - Start up!
+2024-12-08 14:25:23,859 - INFO - startup - Application startup complete.
+2024-12-08 14:25:23,860 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:25:48,800 - INFO - _serve - Started server process [7]
+2024-12-08 14:25:48,800 - INFO - startup - Waiting for application startup.
+2024-12-08 14:25:48,801 - INFO - startup - Start up!
+2024-12-08 14:25:48,801 - INFO - startup - Application startup complete.
+2024-12-08 14:25:48,801 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:29:20,756 - INFO - _serve - Started server process [6]
+2024-12-08 14:29:20,756 - INFO - startup - Waiting for application startup.
+2024-12-08 14:29:20,756 - INFO - startup - Start up!
+2024-12-08 14:29:20,757 - INFO - startup - Application startup complete.
+2024-12-08 14:29:20,757 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:32:21,150 - INFO - _serve - Started server process [6]
+2024-12-08 14:32:21,151 - INFO - startup - Waiting for application startup.
+2024-12-08 14:32:21,151 - INFO - startup - Start up!
+2024-12-08 14:32:21,154 - INFO - startup - Application startup complete.
+2024-12-08 14:32:21,155 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:34:16,815 - INFO - _serve - Started server process [7]
+2024-12-08 14:34:16,815 - INFO - startup - Waiting for application startup.
+2024-12-08 14:34:16,815 - INFO - startup - Start up!
+2024-12-08 14:34:16,816 - INFO - startup - Application startup complete.
+2024-12-08 14:34:16,816 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:34:56,334 - INFO - _serve - Started server process [7]
+2024-12-08 14:34:56,334 - INFO - startup - Waiting for application startup.
+2024-12-08 14:34:56,335 - INFO - startup - Start up!
+2024-12-08 14:34:56,335 - INFO - startup - Application startup complete.
+2024-12-08 14:34:56,336 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:36:04,750 - INFO - _serve - Started server process [7]
+2024-12-08 14:36:04,750 - INFO - startup - Waiting for application startup.
+2024-12-08 14:36:04,751 - INFO - startup - Start up!
+2024-12-08 14:36:04,751 - INFO - startup - Application startup complete.
+2024-12-08 14:36:04,752 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:41:25,967 - INFO - _serve - Started server process [7]
+2024-12-08 14:41:25,967 - INFO - startup - Waiting for application startup.
+2024-12-08 14:41:25,968 - INFO - startup - Start up!
+2024-12-08 14:41:25,968 - INFO - startup - Application startup complete.
+2024-12-08 14:41:25,969 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:41:37,346 - INFO - _serve - Started server process [7]
+2024-12-08 14:41:37,346 - INFO - startup - Waiting for application startup.
+2024-12-08 14:41:37,347 - INFO - startup - Start up!
+2024-12-08 14:41:37,347 - INFO - startup - Application startup complete.
+2024-12-08 14:41:37,347 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
+2024-12-08 14:43:53,190 - INFO - _serve - Started server process [7]
+2024-12-08 14:43:53,190 - INFO - startup - Waiting for application startup.
+2024-12-08 14:43:53,191 - INFO - startup - Start up!
+2024-12-08 14:43:53,191 - INFO - startup - Application startup complete.
+2024-12-08 14:43:53,192 - INFO - _log_started_message - Uvicorn running on http://0.0.0.0:1111 (Press CTRL+C to quit)
