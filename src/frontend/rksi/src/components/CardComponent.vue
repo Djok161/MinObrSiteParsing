@@ -1,30 +1,23 @@
 <template>
-  <div :class="['card custom-card p-3', card.status === 'err' ? 'border-danger' : '']">
+  <div :class="['card custom-card p-3', card.status === 'error' ? 'border-danger' : '']">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <div>
-        <h5 :class="['fw-bold', card.status === 'err' ? 'text-danger' : '']">{{ card.name }}</h5>
+        <h5 :class="['fw-bold', card.status === 'error' ? 'text-danger' : '']">{{ card.tag }}</h5>
         <p class="text-muted mb-0">Последняя проверка: {{ formattedDate }}</p>
       </div>
       <div class="btn-group">
         <button
             class="btn btn-outline-info btn-lg action-btn"
             @click="openRefreshModal"
-            :disabled="card.status === 'load'"
+            :disabled="!canUpload"
             title="Обновить"
         >
           <i class="bi bi-arrow-clockwise"></i>
-
-          <RefreshModal
-              :show="isRefreshModalVisible"
-              :card="card"
-              @confirm="handleRefreshConfirm"
-              @cancel="() => (isRefreshModalVisible = false)"></RefreshModal>
-
         </button>
         <button
             class="btn btn-outline-danger btn-lg action-btn"
             @click="openDeleteModal"
-            :disabled="card.status === 'load'"
+            :disabled="!canUpload"
             title="Удалить"
         >
           <i class="bi bi-trash"></i>
@@ -32,24 +25,30 @@
       </div>
     </div>
 
-    <!-- Основное содержимое карточки (можно добавить при необходимости) -->
+    <!-- Основное содержимое карточки -->
     <div class="flex-grow-1">
-      <!-- Здесь можно добавить дополнительное содержимое карточки -->
+      <p v-if="card.status === 'parsing_2'" class="text-warning">
+        Идет дополнительная обработка нейросетью
+      </p>
+      <p v-if="card.status === 'error'" class="text-danger">
+        {{ statusMessages.error }}
+      </p>
+      <p v-if="isLoadingStatus" class="text-primary">
+        {{ statusMessages[card.status] }}
+      </p>
+      <p v-if="!isLoadingStatus && canUpload && card.status === 'ok'" class="text-success">
+        {{ statusMessages.ok }}
+      </p>
     </div>
 
-    <!-- Надпись "соответствие требованиям" -->
-    <div :class="['requirements-text mb-2', requirementsTextClass]">
-      соответствие требованиям
-    </div>
-
-    <!-- Прогресс-бара и кнопка "Перейти" на одной линии внизу -->
+    <!-- Прогресс-бара -->
     <div class="d-flex align-items-center mt-2">
       <div class="progress flex-grow-1 me-3" style="height: 12px;">
         <div
             :class="['progress-bar', progressBarClasses]"
-            :style="progressBarStyle"
+            :style="{ width: `${card.progress}%` }"
             role="progressbar"
-            :aria-valuenow="progress"
+            :aria-valuenow="card.progress"
             aria-valuemin="0"
             aria-valuemax="100"
         ></div>
@@ -65,6 +64,9 @@
 
     <!-- Модальное окно подтверждения удаления -->
     <DeleteModal :show="isDeleteModalVisible" @confirm="confirmDelete" @cancel="cancelDelete" />
+
+    <!-- Модальное окно подтверждения обновления -->
+    <RefreshModal :show="isRefreshModalVisible" :card="card" @confirm="handleRefreshConfirm" @cancel="() => (isRefreshModalVisible = false)" />
   </div>
 </template>
 
@@ -72,7 +74,6 @@
 import { ref, computed } from 'vue';
 import DeleteModal from '../components/modals/DeleteModal.vue';
 import RefreshModal from '../components/modals/RefreshModal.vue';
-
 
 export default {
   name: 'Card',
@@ -88,81 +89,102 @@ export default {
   },
   setup(props, { emit }) {
     const isDeleteModalVisible = ref(false);
+    const isRefreshModalVisible = ref(false);
 
+    // Открытие модального окна удаления
     const openDeleteModal = () => {
       isDeleteModalVisible.value = true;
     };
 
+    // Подтверждение удаления
     const confirmDelete = () => {
       emit('delete', props.card);
       isDeleteModalVisible.value = false;
     };
 
+    // Отмена удаления
     const cancelDelete = () => {
       isDeleteModalVisible.value = false;
     };
 
-    const isRefreshModalVisible = ref(false);
-
+    // Открытие модального окна обновления
     const openRefreshModal = () => {
       isRefreshModalVisible.value = true;
     };
 
-    const handleRefreshConfirm = (cardId) => {
-      console.log(`Карточка с ID ${cardId} обновлена`);
+    // Подтверждение обновления
+    const handleRefreshConfirm = () => {
+      emit('refresh', props.card);
       isRefreshModalVisible.value = false;
-      emit('refresh');
     };
 
-
-
+    // Навигация по URL карточки
     const navigate = () => {
-      if (props.card.status === 'ok') {
-        emit('navigate', props.card);
+      if (props.card.status === 'ok' || props.card.status === 'parsing_2') {
+        emit('navigate', props.card.tag); // Передаём только 'tag'
       }
     };
 
-    const calculateProgress = () => {
-      return Math.min(props.card.number_of_prompts_found * 10, 100);
+    // Форматирование даты из Unix timestamp
+    const formattedDate = computed(() => {
+      if (props.card.time_start && !isNaN(props.card.time_start)) {
+        const date = new Date(props.card.time_start * 1000); // Предполагается, что time_start в секундах
+        return date.toLocaleString();
+      }
+      return 'Неизвестно';
+    });
+
+    // Сообщения для статусов
+    const statusMessages = {
+      ok: "Готово",
+      parsing_1: "Основная стадия парсинга",
+      parsing_2: "Отчет готов. Идет дополнительная стадия парсинга",
+      error: "Ошибка",
+      wait: "Ожидание начала парсинга",
     };
 
-    const progress = computed(() => calculateProgress());
+    // Определение, находится ли карточка в статусе загрузки
+    const isLoadingStatus = computed(() => {
+      return props.card.status === 'wait' || props.card.status === 'parsing_1';
+    });
 
+    // Определение, можно ли загружать файл
+    const canUpload = computed(() => {
+      return props.card.status === 'ok' || props.card.status === 'parsing_2';
+    });
+
+    // Классы прогресс-бара в зависимости от статуса
     const progressBarClasses = computed(() => {
-      if (props.card.status === 'err') {
+      if (props.card.status === 'error') {
         return 'bg-danger';
-      } else if (props.card.status === 'load') {
-        return 'bg-success progress-bar-striped progress-bar-animated';
-      } else {
-        return 'bg-success';
+      } else if (isLoadingStatus.value) {
+        return 'bg-info progress-bar-striped progress-bar-animated';
+      } else if (props.card.status === 'parsing_2') {
+        return 'bg-warning';
       }
+      return 'bg-success';
     });
 
-    const progressBarStyle = computed(() => {
-      if (props.card.status === 'err') {
-        return { width: '0%' };
-      } else if (props.card.status === 'load') {
-        return { width: '100%' };
-      } else {
-        return { width: `${progress.value}%`, backgroundColor: '#28A745' };
-      }
-    });
-
+    // Классы кнопки "Перейти" в зависимости от статуса
     const navigateButtonClass = computed(() => {
-      if (props.card.status === 'err') {
+      if (props.card.status === 'error') {
         return 'btn-danger';
       }
       return 'btn-primary';
     });
 
+    // Отключение кнопки "Перейти"
     const isNavigateDisabled = computed(() => {
-      return props.card.status !== 'ok';
+      return props.card.status !== 'ok' && props.card.status !== 'parsing_2';
     });
 
+    // Классы для текста "соответствие требованиям"
     const requirementsTextClass = computed(() => {
-      if (props.card.status === 'err') {
+      if (props.card.status === 'error') {
         return 'text-danger';
-      } else if (props.card.status === 'load') {
+      } else if (props.card.status === 'wait' || props.card.status === 'parsing_1') {
+        return 'text-warning';
+      } else if (props.card.status === 'parsing_2') {
         return 'text-warning';
       }
       return 'text-success';
@@ -173,16 +195,18 @@ export default {
       openDeleteModal,
       confirmDelete,
       cancelDelete,
+      isRefreshModalVisible,
+      openRefreshModal,
+      handleRefreshConfirm,
       navigate,
-      progress,
+      formattedDate,
+      statusMessages,
+      isLoadingStatus,
+      canUpload,
       progressBarClasses,
-      progressBarStyle,
       navigateButtonClass,
       isNavigateDisabled,
       requirementsTextClass,
-      isRefreshModalVisible,
-      openRefreshModal,
-      handleRefreshConfirm
     };
   },
 };
@@ -244,11 +268,11 @@ export default {
 }
 
 .text-danger {
-  color: #dc3545 !important; /* Красный цвет для 'err' */
+  color: #dc3545 !important; /* Красный цвет для 'error' */
 }
 
 .text-warning {
-  color: #ffc107 !important; /* Желтый цвет для 'load' */
+  color: #ffc107 !important; /* Желтый цвет для 'wait' и 'parsing_1' */
 }
 
 .text-success {
@@ -270,5 +294,11 @@ export default {
   .requirements-text {
     font-size: 0.9rem;
   }
+}
+
+/* Стиль для disabled dropzone */
+.disabled-dropzone {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 </style>

@@ -13,7 +13,7 @@
         <div
             class="col-md-6 mb-4"
             v-for="card in cards"
-            :key="card.id"
+            :key="card.tag"
         >
           <Card
               :card="card"
@@ -48,7 +48,7 @@ export default {
     async fetchCards() {
       this.loading = true;
       try {
-        const response = await api.get('/cards/all');
+        const response = await api.get('/site/all');
         this.cards = response.data;
       } catch (err) {
         this.error = 'Не удалось загрузить карточки.';
@@ -75,8 +75,8 @@ export default {
         alert('Произошла ошибка при удалении карточки.');
       }
     },
-    handleNavigate(card) {
-      alert(`Переход на страницу карточки "${card.name}".`);
+    handleNavigate(tag) {
+      this.$router.push({ name: "DetailsPage", params: { tag: tag } }); // Изменено с key на tag
     },
   },
 };

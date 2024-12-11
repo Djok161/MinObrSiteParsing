@@ -9,7 +9,6 @@ const api = axios.create({
     headers: {
         'Content-Type': 'application/json',
     },
-    withCredentials: true,
     paramsSerializer: params => qs.stringify(params, { arrayFormat: 'repeat' }), // Форматирование массивов как repeated
 })
 

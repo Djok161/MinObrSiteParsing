@@ -1,55 +1,81 @@
 <template>
-  <div>
-    <!-- Модальное окно -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">Отправка ссылки</h2>
+
+    <!-- Кнопка открытия модального окна добавления -->
+    <button class="btn btn-primary mb-3" @click="openAddModal">
+      Добавить сайт
+    </button>
+
+    <!-- Модальное окно добавления сайта -->
+    <div
+        class="modal fade"
+        tabindex="-1"
+        :class="{ show: isAddModalVisible }"
+        style="display: block;"
+        v-if="isAddModalVisible"
+        @click.self="closeAddModal"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">{{ title }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <h5 class="modal-title">Добавить сайт</h5>
+            <button type="button" class="btn-close" @click="closeAddModal"></button>
           </div>
           <div class="modal-body">
             <form @submit.prevent="handleSubmit">
               <div class="mb-3">
-                <label for="linkInput" class="form-label">Введите ссылку</label>
+                <label for="urlInput" class="form-label">URL сайта</label>
                 <input
-                    type="url"
+                    type="text"
                     class="form-control"
-                    id="linkInput"
+                    id="urlInput"
                     v-model="link"
+                    placeholder="Введите URL"
                     required
-                    placeholder="https://example.com"
                 />
               </div>
-              <button type="submit" class="btn btn-primary">Отправить</button>
+              <button type="submit" class="btn btn-primary" :disabled="loading">
+                {{ loading ? 'Отправка...' : 'Отправить' }}
+              </button>
             </form>
+
+            <!-- Сообщения об успехе и ошибке внутри модала -->
+            <div v-if="successMessage" class="alert alert-success mt-3">
+              {{ successMessage }}
+            </div>
+            <div v-if="errorMessage" class="alert alert-danger mt-3">
+              {{ errorMessage }}
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Тост -->
-    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1055;">
+    <!-- Тост уведомления -->
+    <div
+        class="toast-container position-fixed top-0 end-0 p-3"
+        style="z-index: 1100"
+    >
       <div
-          class="toast"
-          :class="toast.type === 'success' ? 'text-bg-success' : 'text-bg-danger'"
+          v-if="toast.show"
+          :class="['toast align-items-center text-white border-0', toast.typeClass]"
           role="alert"
           aria-live="assertive"
           aria-atomic="true"
-          v-if="toast.visible"
+          @hidden.bs.toast="toast.show = false"
       >
-        <div class="toast-header">
-          <strong class="me-auto">{{ toast.type === 'success' ? 'Успех' : 'Ошибка' }}</strong>
+        <div class="d-flex">
+          <div class="toast-body">
+            {{ toast.message }}
+          </div>
           <button
               type="button"
-              class="btn-close"
+              class="btn-close btn-close-white me-2 m-auto"
               data-bs-dismiss="toast"
               aria-label="Close"
-              @click="closeToast"
+              @click="toast.show = false"
           ></button>
-        </div>
-        <div class="toast-body">
-          {{ toast.message }}
         </div>
       </div>
     </div>
@@ -57,55 +83,149 @@
 </template>
 
 <script>
-import api from '../../services/api.js'; // Импортируем настроенный экземпляр Axios
+import api from "../../services/api"; // Убедитесь, что ваш axios API подключен
 
 export default {
-  props: {
-    title: {
-      type: String,
-      default: "Добавление нового сайта для проверки",
-    },
-  },
+  name: "SubmitLink",
   data() {
     return {
-      link: "", // Сохраняем введенную ссылку
+      link: "",
+      loading: false,
+      successMessage: "",
+      errorMessage: "",
+      isAddModalVisible: false,
       toast: {
-        visible: false,
+        show: false,
         message: "",
         type: "", // 'success' или 'error'
+        typeClass: "",
       },
     };
   },
   methods: {
-    async handleSubmit() {
-      try {
-        const response = await api.post('/send-link', {
-          url: this.link, // Отправляемая ссылка
-        });
-        this.showToast('Ссылка успешно отправлена!', 'success');
-        this.link = ""; // Сбрасываем поле ввода
-      } catch (error) {
-        console.error('Ошибка отправки ссылки:', error);
-        this.showToast('Произошла ошибка при отправке ссылки.', 'error');
-      }
+    // Открыть модальное окно добавления
+    openAddModal() {
+      this.isAddModalVisible = true;
+      this.link = "";
+      this.successMessage = "";
+      this.errorMessage = "";
     },
+
+    // Закрыть модальное окно добавления
+    closeAddModal() {
+      this.isAddModalVisible = false;
+      this.link = "";
+      this.successMessage = "";
+      this.errorMessage = "";
+    },
+
+    // Функция отображения тостов
     showToast(message, type) {
       this.toast.message = message;
       this.toast.type = type;
-      this.toast.visible = true;
+      this.toast.show = true;
+
+      // Определение класса для цвета тоста
+      if (type === "success") {
+        this.toast.typeClass = "bg-success";
+      } else if (type === "error") {
+        this.toast.typeClass = "bg-danger";
+      }
+
+      // Автоматически скрыть тост через 3 секунды
       setTimeout(() => {
-        this.toast.visible = false;
-      }, 3000); // Тост будет виден 3 секунды
+        this.toast.show = false;
+      }, 3000);
     },
-    closeToast() {
-      this.toast.visible = false;
+
+    // Обработчик отправки формы
+    async handleSubmit() {
+      if (!this.link) {
+        this.showToast("Пожалуйста, введите URL.", "error");
+        return;
+      }
+
+      // Дополнительная валидация URL (опционально)
+      if (!this.isValidUrl(this.link)) {
+        this.showToast("Пожалуйста, введите корректный URL.", "error");
+        return;
+      }
+
+      this.loading = true;
+      this.successMessage = "";
+      this.errorMessage = "";
+
+      try {
+        console.log("Отправка URL как параметра запроса:", this.link); // Для отладки
+
+        const response = await api.post(
+            "/site/",
+            null, // Пустое тело
+            {
+              params: {
+                url: this.link, // Отправляем 'url' как параметр запроса
+              },
+              headers: {
+                "Content-Type": "application/json", // Указываем тип содержимого
+              },
+            }
+        );
+
+        console.log("Ответ сервера:", response); // Для отладки
+
+        if (response.status === 200) {
+          this.showToast("Ссылка успешно отправлена!", "success");
+          this.closeAddModal();
+          // Перезагрузка страницы для обновления списка карточек
+          setTimeout(() => {
+            window.location.reload();
+          }, 1000); // Задержка для отображения тоста перед перезагрузкой
+        } else {
+          this.showToast("Ошибка при отправке ссылки.", "error");
+        }
+      } catch (error) {
+        console.error("Ошибка отправки ссылки:", error);
+        if (error.response && error.response.data && error.response.data.detail) {
+          this.showToast(error.response.data.detail, "error");
+        } else {
+          this.showToast("Произошла ошибка при отправке ссылки.", "error");
+        }
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    // Дополнительная функция для валидации URL (опционально)
+    isValidUrl(url) {
+      const pattern = new RegExp(
+          "^(https?:\\/\\/)?" + // протокол (не обязательно, но можно сделать обязательным)
+          "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // доменное имя
+          "((\\d{1,3}\\.){3}\\d{1,3}))" + // или IP (v4) адрес
+          "(\\:\\d+)?" + // порт
+          "(\\/[-a-z\\d%_.~+]*)*" + // путь
+          "(\\?[;&a-z\\d%_.~+=-]*)?" + // строка запроса
+          "(\\#[-a-z\\d_]*)?$",
+          "i"
+      ); // фрагмент
+      return !!pattern.test(url);
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
+/* Стили для модального окна */
+.modal {
+  display: block; /* Для отображения модального окна */
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Стили для тостов */
 .toast-container {
-  z-index: 1055; /* Убедитесь, что тост отображается поверх других элементов */
+  z-index: 1100;
+}
+
+.toast {
+  min-width: 250px;
 }
 </style>

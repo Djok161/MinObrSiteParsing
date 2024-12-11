@@ -1,29 +1,41 @@
 <template>
   <div class="container mt-5">
-    <h2 class="text-center mb-4">Загрузка файла</h2>
+    <h2 class="text-center mb-4">Загрузка PDF файла</h2>
+
+    <!-- Loading Spinner -->
+    <div v-if="isStatusLoading" class="text-center">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Загрузка...</span>
+      </div>
+      <p>Проверка состояния сервера...</p>
+    </div>
 
     <!-- Зона для Drag-and-Drop -->
     <div
+        v-else
         class="dropzone"
         @click="triggerFileInput"
         @dragover.prevent="onDragOver"
         @dragleave.prevent="onDragLeave"
         @drop.prevent="onDrop"
-        :class="{ 'dropzone-hover': isHovering }"
+        :class="{ 'dropzone-hover': isHovering, 'disabled-dropzone': !canUpload }"
+        :style="{ cursor: canUpload ? 'pointer' : 'not-allowed', opacity: canUpload ? 1 : 0.6 }"
     >
-      <p>Перетащите файл сюда или нажмите для выбора</p>
+      <p>Перетащите PDF файл сюда или нажмите для выбора</p>
       <input
           type="file"
           class="file-input"
           @change="onFileSelect"
           ref="fileInput"
+          accept="application/pdf"
+          :disabled="!canUpload"
       />
     </div>
 
     <!-- Отображение выбранного файла -->
     <div v-if="file" class="mt-3">
       <p><strong>Выбран файл:</strong> {{ file.name }}</p>
-      <button class="btn btn-primary" @click="uploadFile" :disabled="loading">
+      <button class="btn btn-primary" @click="uploadFile" :disabled="loading || !canUpload">
         {{ loading ? "Загрузка..." : "Загрузить" }}
       </button>
     </div>
@@ -41,9 +53,10 @@
 </template>
 
 <script>
-import api from "../services/api"; // Убедитесь, что ваш axios API подключен
+import api from "../services/api";
 
 export default {
+  name: "FileUpload",
   data() {
     return {
       file: null,
@@ -51,31 +64,61 @@ export default {
       loading: false,
       successMessage: "",
       errorMessage: "",
+      status: "",
+      isStatusLoading: true,
+      pollInterval: null,
     };
+  },
+  computed: {
+    canUpload() {
+      return this.status === "ok" || this.status === "ok_run_with_mistral";
+    },
   },
   methods: {
     triggerFileInput() {
-      // Программно вызываем клик по input при нажатии на dropzone
-      this.$refs.fileInput.click();
+      if (this.canUpload) {
+        this.$refs.fileInput.click();
+      }
     },
     onDragOver() {
-      this.isHovering = true;
+      if (this.canUpload) {
+        this.isHovering = true;
+      }
     },
     onDragLeave() {
       this.isHovering = false;
     },
     onDrop(event) {
+      if (!this.canUpload) return;
       this.isHovering = false;
       const files = event.dataTransfer.files;
       if (files.length > 0) {
-        this.file = files[0];
+        const selectedFile = files[0];
+        if (this.isPdf(selectedFile)) {
+          this.file = selectedFile;
+          this.errorMessage = "";
+        } else {
+          this.file = null;
+          this.errorMessage = "Разрешены только PDF файлы.";
+        }
       }
     },
     onFileSelect(event) {
+      if (!this.canUpload) return;
       const files = event.target.files;
       if (files.length > 0) {
-        this.file = files[0];
+        const selectedFile = files[0];
+        if (this.isPdf(selectedFile)) {
+          this.file = selectedFile;
+          this.errorMessage = "";
+        } else {
+          this.file = null;
+          this.errorMessage = "Разрешены только PDF файлы.";
+        }
       }
+    },
+    isPdf(file) {
+      return file.type === "application/pdf";
     },
     async uploadFile() {
       if (!this.file) {
@@ -84,14 +127,14 @@ export default {
       }
 
       const formData = new FormData();
-      formData.append("file", this.file);
+      formData.append("pdf_file", this.file);
 
       this.loading = true;
       this.successMessage = "";
       this.errorMessage = "";
 
       try {
-        const response = await api.post("/upload", formData, {
+        const response = await api.post("/pdf", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
           },
@@ -99,16 +142,53 @@ export default {
         if (response.status === 200) {
           this.successMessage = "Файл успешно загружен!";
           this.file = null;
+          this.$refs.fileInput.value = "";
         } else {
           this.errorMessage = "Ошибка при загрузке файла.";
         }
       } catch (error) {
         console.error("Ошибка при загрузке файла:", error);
-        this.errorMessage = "Ошибка при загрузке файла.";
+        if (error.response && error.response.data && error.response.data.detail) {
+          this.errorMessage = error.response.data.detail;
+        } else {
+          this.errorMessage = "Ошибка при загрузке файла.";
+        }
       } finally {
         this.loading = false;
       }
     },
+    async fetchStatus() {
+      try {
+        const response = await api.get("/pdf");
+        if (response.status === 200 && response.data.status) {
+          this.status = response.data.status;
+        } else {
+          this.status = "";
+          this.errorMessage = "Не удалось получить статус.";
+        }
+      } catch (error) {
+        console.error("Ошибка при получении статуса:", error);
+        this.errorMessage = "Ошибка при получении статуса.";
+      } finally {
+        this.isStatusLoading = false;
+      }
+    },
+    startPolling() {
+      this.pollInterval = setInterval(this.fetchStatus, 5000);
+    },
+    stopPolling() {
+      if (this.pollInterval) {
+        clearInterval(this.pollInterval);
+        this.pollInterval = null;
+      }
+    },
+  },
+  created() {
+    this.fetchStatus();
+    this.startPolling();
+  },
+  beforeUnmount() {
+    this.stopPolling();
   },
 };
 </script>
@@ -135,5 +215,10 @@ export default {
 
 .file-input {
   display: none;
+}
+
+.disabled-dropzone {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 </style>
