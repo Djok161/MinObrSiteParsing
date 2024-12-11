@@ -12,10 +12,11 @@ class PdfParser:
 
         self.__create_pdf_txt()
 
-    @staticmethod
-    def __create_pdf_txt():
+
+    def __create_pdf_txt(self):
         data = {
             "status": "wait",
+            "path": self.__pdf_path,
             "process": 0,
         }
         with open("PDF.json", "w", encoding="utf-8") as f:

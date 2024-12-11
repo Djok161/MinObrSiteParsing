@@ -161,6 +161,10 @@ class SiteValidator:
         for item in self.df_res[['itemprop', 'text', 'check', 'status']].to_dict("records"):
             print(item)
             if item['itemprop'] == "copy" or item['status'] != "ok":
+                res.append({
+                    "itemprop": item['itemprop'],
+                    "valid_text": "Данный атрибут не подлежит анализу",
+                })
                 continue
             prompt = f"Проверь соответствует ли контент text тому что описано в check.Если нет то напиши почему, если все соответствует то напиши 'Соответствует'\n\ntext - {item['text']}\ncheck - {item['check']}"
             answer = self.__mistral(prompt)

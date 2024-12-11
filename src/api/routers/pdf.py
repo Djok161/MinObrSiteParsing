@@ -39,12 +39,12 @@ async def add(pdf_file: UploadFile = File(...)):
         shutil.copyfileobj(pdf_file.file, buffer)
 
     try:
-        celery.control.revoke(r3.get(pdf_file.filename), terminate=True)
+        celery.control.revoke(r3.get("PDF"), terminate=True)
     except Exception as e:
         print(e)
 
     task = pdf_pars.delay(pdf_file.filename)
-    r3.set(pdf_file.filename, task.id)
+    r3.set("PDF", task.id)
 
     return True
 

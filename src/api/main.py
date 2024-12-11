@@ -2,10 +2,11 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 
-from celery_app import do_pars
+from celery_app import do_pars, pdf_pars_mistral
 from core.database.site import SiteDB
 from core.schemas.site import Status
 from core.services.redis_client import get_redis, close_all_redis
+from core.services.site_validator import PdfParser
 from middleware import process_time_middleware, ErrorMiddleware
 from routers import router as api_router
 
@@ -20,6 +21,17 @@ app = FastAPI(
 async def startup():
     site_db = SiteDB()
     r = get_redis(0)
+
+    try:
+        pdf = PdfParser.get_pdf_stat()
+        if pdf['status'] != "ok":
+            path = pdf['path']
+            pdf = PdfParser(path)
+            pdf.run()
+            pdf_pars_mistral.delay(pdf)
+    except Exception as e:
+        print(e)
+
 
     all_sites = await site_db.get_all()
 

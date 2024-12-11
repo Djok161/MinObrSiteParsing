@@ -69,18 +69,25 @@ async def repars(url: str):
     url = str(url.scheme + "://" + url.hostname)
     tag = Tag()(url)
 
-    site = SiteUpdateSchemas(
+    site_db = SiteUpdateSchemas(
         status=Status.wait.value,
         time_start=-1,  # processing progress
         time_end=-1,  # processing progress
     )
 
+    site_r = SiteSchemas(
+        url=url,
+        tag=tag,
+        status=Status.wait.value,
+    )
+
+
     try:
         celery.control.revoke(r2.get(tag), terminate=True)
     except Exception as e:
         print(e)
-    r.set(tag, site.json())
-    await site_db.update(url, site)
+    r.set(tag, site_r.json())
+    await site_db.update(url, site_db)
 
     do_pars.delay(url)
 
