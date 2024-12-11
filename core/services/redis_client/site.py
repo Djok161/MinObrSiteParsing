@@ -4,7 +4,7 @@ from .redis_client import get_redis
 from core.schemas.site import SiteSchemas, Status
 import json
 
-from ..RAG.tag import Tag
+from core.services.site_validator.tag import Tag
 
 r = get_redis(0)
 

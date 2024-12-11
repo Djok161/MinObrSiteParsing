@@ -5,6 +5,8 @@ flower
 asyncpg
 psycopg2-binary
 requests
+pandas
+lxml
 
 aiohappyeyeballs==2.4.4
 aiohttp==3.11.9

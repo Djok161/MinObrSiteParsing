@@ -16,6 +16,14 @@ celery.conf.update(
 
 site_db = SiteDB()
 
+@celery.task(bind=True, max_retries=3, ignore_result=True)
+def pdf_pars(self, pdf_path: str):
+    try:
+
+        return True
+    except Exception as e:
+        raise self.retry(exc=e)
+
 
 @celery.task(bind=True, max_retries=3, ignore_result=True)
 def do_pars(self, url: str):

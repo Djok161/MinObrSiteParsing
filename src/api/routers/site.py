@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 from fastapi import APIRouter, HTTPException, WebSocket
 
 from celery_app import do_pars
-from core.services.RAG.tag import Tag
+from core.services.site_validator.tag import Tag
 from core.services.redis_client import get_redis
 from core.schemas.site import SiteSchemas, Status
 from core.database.site import SiteDB

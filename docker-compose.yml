@@ -1,0 +1,101 @@
+version: "3"
+
+services:
+  app:
+    build: ./src/api/.
+    container_name: site_app
+    volumes:
+      - ./src/api:/app
+      - ./core:/app/core
+      - ./.env:/app/.env
+      - ./src/api/app.log:/app/app.log
+    depends_on:
+      - worker
+      - flower
+    ports:
+      - 9898:1111
+    networks:
+      - app
+
+
+  redis:
+    image: redis
+    volumes:
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - ./redis_dump:/var/lib/redis
+    container_name: site_redis
+    networks:
+      - app
+
+  worker:
+    build: ./src/api/.
+    container_name: site_worker
+    command: celery -A celery_app.celery worker --loglevel=info --concurrency=2
+    volumes:
+      - ./src/api:/app
+      - ./core:/app/core
+      - ./.env:/app/.env
+    depends_on:
+      - redis
+      - flower
+    networks:
+      - app
+
+  flower:
+    build: ./src/api/.
+    container_name: site_flower
+    command: celery -A celery_app.celery flower --port=5555
+    volumes:
+      - ./core:/app/core
+      - ./.env:/app/.env
+    ports:
+      - 1255:5555
+    depends_on:
+      - redis
+    networks:
+      - app
+
+  db:
+    image: postgres
+    restart: always
+    shm_size: 512mb
+    volumes:
+      - pg-data:/var/lib/postgresql/data/pgdata
+    networks:
+      - app
+    ports:
+      - 6165:5432
+    environment:
+      POSTGRES_USER: ${PG_USER}
+      POSTGRES_PASSWORD: ${PG_PASS}
+      POSTGRES_DB: ${PG_DB_NAME}
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+
+  adminer:
+    image: adminer
+    restart: always
+    networks:
+      - app
+    ports:
+      - 8866:8080
+
+  alembic:
+    build: ./src/alembic/.
+    container_name: site_alembic
+    restart: on-failure
+    networks:
+      - app
+    volumes:
+      - ./.env:/app/.env
+      - ./core/:/app/core
+      - ./alembic/:/app/alembic
+      - ./alembic.ini/:/app/alembic.ini
+    command: alembic upgrade head
+
+
+volumes:
+  pg-data:
+
+networks:
+  app:
+    driver: bridge

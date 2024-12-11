@@ -3,7 +3,7 @@ import os
 import ssl
 import time
 from urllib.parse import urlparse, urljoin
-
+import idna
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
@@ -52,8 +52,9 @@ class SiteValidator:
 
     def __init__(self, url):
         self._validate_folder()
-        self.output_file = os.path.join(self.BASE_FOLDER_PATH, f"{self._host}_rule_res.csv")
         self.__url = self.__valid_url(url)
+
+        self.output_file = os.path.join(self.BASE_FOLDER_PATH, f"{self._host}_rule_res.csv")
         logger.info(f"Initialized SiteValidator with URL: {self.__url}")
 
     def _validate_folder(self):
