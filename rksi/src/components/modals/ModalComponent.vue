@@ -1,3 +1,4 @@
+<!-- src/components/SubmitLink.vue -->
 <template>
   <div class="container mt-5">
     <h2 class="text-center mb-4">Отправка ссылки</h2>
@@ -11,16 +12,15 @@
     <div
         class="modal fade"
         tabindex="-1"
-        :class="{ show: isAddModalVisible }"
-        style="display: block;"
-        v-if="isAddModalVisible"
-        @click.self="closeAddModal"
+        ref="addModal"
+        aria-labelledby="addModalLabel"
+        aria-hidden="true"
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Добавить сайт</h5>
-            <button type="button" class="btn-close" @click="closeAddModal"></button>
+            <h5 class="modal-title" id="addModalLabel">Добавить сайт</h5>
+            <button type="button" class="btn-close" @click="closeAddModal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <form @submit.prevent="handleSubmit">
@@ -63,7 +63,6 @@
           role="alert"
           aria-live="assertive"
           aria-atomic="true"
-          @hidden.bs.toast="toast.show = false"
       >
         <div class="d-flex">
           <div class="toast-body">
@@ -83,7 +82,8 @@
 </template>
 
 <script>
-import api from "../../services/api"; // Убедитесь, что ваш axios API подключен
+import api from "@/services/api"; // Используйте алиас @, если настроен
+import { Modal } from 'bootstrap';
 
 export default {
   name: "SubmitLink",
@@ -93,19 +93,36 @@ export default {
       loading: false,
       successMessage: "",
       errorMessage: "",
-      isAddModalVisible: false,
       toast: {
         show: false,
         message: "",
         type: "", // 'success' или 'error'
         typeClass: "",
       },
+      addModalInstance: null, // Экземпляр модального окна
     };
+  },
+  mounted() {
+    // Инициализируйте модальное окно Bootstrap
+    this.addModalInstance = new Modal(this.$refs.addModal, {
+      backdrop: true,
+      keyboard: true,
+      focus: true,
+    });
+
+    // Обработчик скрытия модального окна
+    this.$refs.addModal.addEventListener('hidden.bs.modal', () => {
+      // Сбросить поля формы и сообщения
+      this.link = "";
+      this.successMessage = "";
+      this.errorMessage = "";
+    });
   },
   methods: {
     // Открыть модальное окно добавления
     openAddModal() {
-      this.isAddModalVisible = true;
+      console.log("Открытие модального окна добавления");
+      this.addModalInstance.show();
       this.link = "";
       this.successMessage = "";
       this.errorMessage = "";
@@ -113,7 +130,8 @@ export default {
 
     // Закрыть модальное окно добавления
     closeAddModal() {
-      this.isAddModalVisible = false;
+      console.log("Закрытие модального окна добавления");
+      this.addModalInstance.hide();
       this.link = "";
       this.successMessage = "";
       this.errorMessage = "";
@@ -140,13 +158,16 @@ export default {
 
     // Обработчик отправки формы
     async handleSubmit() {
+      console.log("handleSubmit вызван");
+
       if (!this.link) {
+        console.log("URL не введён");
         this.showToast("Пожалуйста, введите URL.", "error");
         return;
       }
 
-      // Дополнительная валидация URL (опционально)
       if (!this.isValidUrl(this.link)) {
+        console.log("Введён некорректный URL:", this.link);
         this.showToast("Пожалуйста, введите корректный URL.", "error");
         return;
       }
@@ -156,30 +177,29 @@ export default {
       this.errorMessage = "";
 
       try {
-        console.log("Отправка URL как параметра запроса:", this.link); // Для отладки
+        console.log("Отправка URL как параметра запроса:", this.link);
 
         const response = await api.post(
             "/site/",
-            null, // Пустое тело
+            {}, // Отправляем пустое тело
             {
               params: {
                 url: this.link, // Отправляем 'url' как параметр запроса
               },
               headers: {
-                "Content-Type": "application/json", // Указываем тип содержимого
+                "Content-Type": "application/json",
               },
             }
         );
 
-        console.log("Ответ сервера:", response); // Для отладки
+        console.log("Ответ сервера:", response);
 
         if (response.status === 200) {
           this.showToast("Ссылка успешно отправлена!", "success");
           this.closeAddModal();
-          // Перезагрузка страницы для обновления списка карточек
           setTimeout(() => {
             window.location.reload();
-          }, 1000); // Задержка для отображения тоста перед перезагрузкой
+          }, 1000);
         } else {
           this.showToast("Ошибка при отправке ссылки.", "error");
         }
@@ -214,12 +234,6 @@ export default {
 </script>
 
 <style scoped>
-/* Стили для модального окна */
-.modal {
-  display: block; /* Для отображения модального окна */
-  background: rgba(0, 0, 0, 0.5);
-}
-
 /* Стили для тостов */
 .toast-container {
   z-index: 1100;
