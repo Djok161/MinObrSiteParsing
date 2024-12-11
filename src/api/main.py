@@ -1,5 +1,3 @@
-import os
-
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
@@ -8,12 +6,13 @@ from celery_app import do_pars
 from core.database.site import SiteDB
 from core.schemas.site import Status
 from core.services.redis_client import get_redis, close_all_redis
-from core.services.site_validator.tag import Tag
 from middleware import process_time_middleware, ErrorMiddleware
 from routers import router as api_router
 
 app = FastAPI(
-    title="Valid Site App"
+    title="Valid Site App",
+    openapi_url="/api/v1/openapi.json",
+    docs_url="/api/v1/docs",
 )
 
 
@@ -28,7 +27,6 @@ async def startup():
         r.set(site.tag, site.json())
         if site.status != Status.ok.value:
             do_pars.delay(site.url)
-
 
 
 @app.on_event("shutdown")

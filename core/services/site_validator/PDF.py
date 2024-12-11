@@ -1,6 +1,6 @@
 import re
 import time
-
+import json
 import pandas as pd
 import pdfplumber
 import requests
@@ -9,6 +9,36 @@ import requests
 class PdfParser:
     def __init__(self, pdf_path: str):
         self.__pdf_path = pdf_path
+
+        self.__create_pdf_txt()
+
+    @staticmethod
+    def __create_pdf_txt():
+        data = {
+            "status": "wait",
+            "process": 0,
+        }
+        with open("PDF.json", "w", encoding="utf-8") as f:
+            json.dump(data, f)
+
+    def set_stat(self, status: str = None, process: int = None):
+        with open("PDF.json", "r", encoding="utf-8") as f:
+            data = json.load(f)
+
+        if status:
+            data["status"] = status
+
+        if process:
+            data["process"] = process
+
+
+        with open("PDF.json", "w", encoding="utf-8") as f:
+            json.dump(data, f)
+
+    @staticmethod
+    def get_pdf_stat():
+        with open("PDF.json", "r", encoding="utf-8") as f:
+            return json.load(f)
 
     @staticmethod
     def __clear_url(text: str):
@@ -78,6 +108,7 @@ class PdfParser:
         return t > f
 
     def run(self):
+        self.set_stat(status="run_without_mistral")
         all_t = []
         self.sveden_t: dict = None
 
@@ -137,8 +168,11 @@ class PdfParser:
         df.to_csv("it.csv", index=False)
 
         self._df = df
+        self.set_stat(status="ok_without_mistral")
 
     def run_with_mistral(self):
+        self.set_stat(status="ok_run_with_mistral")
         self._df['load'] = self._df['check'].apply(self.__load_ro_no)
         self._df.reset_index(drop=True, inplace=True)
         self._df.to_csv("it.csv", index=False)
+        self.set_stat(status="ok")

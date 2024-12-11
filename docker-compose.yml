@@ -30,7 +30,7 @@ services:
   worker:
     build: ./src/api/.
     container_name: site_worker
-    command: celery -A celery_app.celery worker --loglevel=info --concurrency=2
+    command: celery -A celery_app.celery worker --loglevel=info
     volumes:
       - ./src/api:/app
       - ./core:/app/core
@@ -63,8 +63,8 @@ services:
       - pg-data:/var/lib/postgresql/data/pgdata
     networks:
       - app
-    ports:
-      - 6165:5432
+#    ports:
+#      - 6165:5432
     environment:
       POSTGRES_USER: ${PG_USER}
       POSTGRES_PASSWORD: ${PG_PASS}
@@ -77,7 +77,7 @@ services:
     networks:
       - app
     ports:
-      - 8866:8080
+      - 7324:8080
 
   alembic:
     build: ./src/alembic/.

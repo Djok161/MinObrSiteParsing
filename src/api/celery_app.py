@@ -5,6 +5,7 @@ from core.services.site_validator import SiteValidator
 from core.database.site import SiteDB
 from core.schemas.site import Status, SiteUpdateSchemas
 from core.services.redis_client.site import set_site_status, set_site_time_end, set_site_time_start
+from core.services.site_validator import PdfParser
 
 BROKER_URL = 'redis://redis:6379/1'
 BACKEND_URL = 'redis://redis:6379/1'
@@ -19,7 +20,9 @@ site_db = SiteDB()
 @celery.task(bind=True, max_retries=3, ignore_result=True)
 def pdf_pars(self, pdf_path: str):
     try:
-
+        pdf = PdfParser(pdf_path)
+        pdf.run()
+        pdf.run_with_mistral()
         return True
     except Exception as e:
         raise self.retry(exc=e)

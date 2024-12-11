@@ -1,7 +1,7 @@
 from core.models.site import SiteModel
 from core.schemas.site import SiteSchemas, SiteUpdateSchemas
 from .database import get_session_async, get_session_sync
-from sqlalchemy import select, update
+from sqlalchemy import select, update, delete
 
 
 class SiteDB:
@@ -58,6 +58,18 @@ class SiteDB:
                 session.add(site)
                 await session.commit()
                 await session.refresh(site)
+            except Exception as e:
+                await session.rollback()
+                raise e
+
+        return True
+
+    async def delete(self, url: str):
+        query = delete(SiteModel).where(SiteModel.url == url)
+        async with get_session_async() as session:
+            try:
+                await session.execute(query)
+                await session.commit()
             except Exception as e:
                 await session.rollback()
                 raise e
