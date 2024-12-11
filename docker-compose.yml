@@ -21,8 +21,6 @@ services:
   frontend:
     build: ./src/frontend/.
     container_name: site_frontend
-    volumes:
-      - ./.env:/app/.env
     depends_on:
       - app
     ports:

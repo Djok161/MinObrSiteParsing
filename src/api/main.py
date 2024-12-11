@@ -22,15 +22,15 @@ async def startup():
     site_db = SiteDB()
     r = get_redis(0)
 
-    try:
-        pdf = PdfParser.get_pdf_stat()
-        if pdf['status'] != "ok":
-            path = pdf['path']
-            pdf = PdfParser(path)
-            pdf.run()
-            pdf_pars_mistral.delay(pdf)
-    except Exception as e:
-        print(e)
+    # try:
+    #     pdf = PdfParser.get_pdf_stat()
+    #     if pdf['status'] != "ok":
+    #         path = pdf['path']
+    #         pdf = PdfParser(path)
+    #         pdf.run()
+    #         pdf_pars_mistral.delay(pdf)
+    # except Exception as e:
+    #     print(e)
 
 
     all_sites = await site_db.get_all()
