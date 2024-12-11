@@ -18,6 +18,19 @@ services:
       - app
 
 
+  frontend:
+    build: ./src/frontend/.
+    container_name: site_frontend
+    volumes:
+      - ./.env:/app/.env
+    depends_on:
+      - app
+    ports:
+      - 3000:3000
+    networks:
+      - app
+
+
   redis:
     image: redis
     volumes:
