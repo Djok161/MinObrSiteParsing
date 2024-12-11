@@ -69,7 +69,7 @@ async def repars(url: str):
     url = str(url.scheme + "://" + url.hostname)
     tag = Tag()(url)
 
-    site_db = SiteUpdateSchemas(
+    site = SiteUpdateSchemas(
         status=Status.wait.value,
         time_start=-1,  # processing progress
         time_end=-1,  # processing progress
@@ -87,7 +87,7 @@ async def repars(url: str):
     except Exception as e:
         print(e)
     r.set(tag, site_r.json())
-    await site_db.update(url, site_db)
+    await site_db.update(url, site)
 
     do_pars.delay(url)
 

@@ -63,10 +63,17 @@ export default {
     },
     async handleDelete(card) {
       try {
-        const response = await api.delete(`/cards/${card.id}`);
+        const response = await api.delete('/site/', { // Вторым аргументом передаём объект конфигурации
+          params: {
+            url: card.url // Добавляем параметр 'url'
+          },
+          headers: {
+            "Content-Type": "application/json" // Опционально: укажите заголовки, если необходимо
+          }
+        });
         if (response.status === 200) {
-          this.cards = this.cards.filter((c) => c.id !== card.id);
-          alert(`Карточка "${card.name}" успешно удалена.`);
+          // Обновляем массив карточек, удаляя удалённую карточку
+          this.cards = this.cards.filter((c) => c.url !== card.url);
         } else {
           alert(`Не удалось удалить карточку "${card.name}".`);
         }

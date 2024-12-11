@@ -40,19 +40,6 @@
         {{ statusMessages.ok }}
       </p>
     </div>
-
-    <!-- Прогресс-бара -->
-    <div class="d-flex align-items-center mt-2">
-      <div class="progress flex-grow-1 me-3" style="height: 12px;">
-        <div
-            :class="['progress-bar', progressBarClasses]"
-            :style="{ width: `${card.progress}%` }"
-            role="progressbar"
-            :aria-valuenow="card.progress"
-            aria-valuemin="0"
-            aria-valuemax="100"
-        ></div>
-      </div>
       <button
           :class="['btn btn-lg navigate-btn', navigateButtonClass]"
           @click="navigate"
@@ -67,7 +54,6 @@
 
     <!-- Модальное окно подтверждения обновления -->
     <RefreshModal :show="isRefreshModalVisible" :card="card" @confirm="handleRefreshConfirm" @cancel="() => (isRefreshModalVisible = false)" />
-  </div>
 </template>
 
 <script>

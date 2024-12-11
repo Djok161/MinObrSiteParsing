@@ -1,7 +1,6 @@
 <!-- src/components/SubmitLink.vue -->
 <template>
   <div class="container mt-5">
-    <h2 class="text-center mb-4">Отправка ссылки</h2>
 
     <!-- Кнопка открытия модального окна добавления -->
     <button class="btn btn-primary mb-3" @click="openAddModal">
@@ -218,7 +217,7 @@ export default {
     // Дополнительная функция для валидации URL (опционально)
     isValidUrl(url) {
       const pattern = new RegExp(
-          "^(https?:\\/\\/)?" + // протокол (не обязательно, но можно сделать обязательным)
+          "^(https?:\\/\\/)"+ // протокол (обязательно)
           "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // доменное имя
           "((\\d{1,3}\\.){3}\\d{1,3}))" + // или IP (v4) адрес
           "(\\:\\d+)?" + // порт
@@ -226,7 +225,7 @@ export default {
           "(\\?[;&a-z\\d%_.~+=-]*)?" + // строка запроса
           "(\\#[-a-z\\d_]*)?$",
           "i"
-      ); // фрагмент
+      );
       return !!pattern.test(url);
     },
   },
