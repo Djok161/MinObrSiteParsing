@@ -63,16 +63,23 @@ export default {
 
     const confirm = async () => {
       try {
-        const response = await api.post(`/cards/refresh/${props.card.id}`);
+        const response = await api.patch('/site/', null, { // Вторым аргументом передаём данные, если они есть. В данном случае null.
+          params: {
+            url: props.card.url // Добавляем параметр 'url'
+          },
+          headers: {
+            "Content-Type": "application/json" // При необходимости указываем заголовки
+          }
+        });
+
         if (response.status === 200) {
           emit('confirm', props.card.id); // Эмитим событие для обновления карточки
           hideModal();
         } else {
-          alert(`Ошибка при обновлении карточки. Код: ${response.status}`);
+          hideModal();
         }
       } catch (error) {
-        console.error('Ошибка при обновлении карточки:', error);
-        alert('Произошла ошибка при обновлении карточки.');
+        hideModal();
       }
     };
 

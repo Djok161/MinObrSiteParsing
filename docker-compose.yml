@@ -23,6 +23,8 @@ services:
     container_name: site_frontend
     depends_on:
       - app
+    volumes:
+      - ./.env:/app/.env
     ports:
       - 3000:3000
     networks:
